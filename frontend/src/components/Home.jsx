@@ -31,7 +31,7 @@ const Home = () => {
       img_url: "https://www.clipartmax.com/png/middle/255-2557794_animated-person-animated-picture-of-man.png"
     }
   ];
-
+  
   // State to hold data
   const [data, setData] = useState(mockData);
 
