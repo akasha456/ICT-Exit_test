@@ -17,6 +17,20 @@ app.post("/add", async (req, res) => {
   }
 });
 
+app.get("/get/:id", async (req, res) => {
+  try {
+    const employee = await model.findById(req.params.id);
+    if (!employee) {
+      return res.status(404).send({ message: "Employee not found" });
+    }
+    res.json(employee);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Error fetching employee" });
+  }
+});
+
+
 app.get("/get", async (req, res) => {
   try {
     const employees = await model.find(); // Fetches all documents

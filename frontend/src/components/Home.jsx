@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Button, Card, CardActions, CardContent, Grid, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 import axios from "axios";
 
 const Home = () => {
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -37,6 +32,10 @@ const Home = () => {
       .catch((err) => {
         console.error("Error deleting employee:", err);
       });
+  };
+
+  const navigateToUpdate = (id) => {
+    navigate(`/update/${id}`);
   };
 
   return (
@@ -68,7 +67,7 @@ const Home = () => {
                   <Button size="small" variant="contained" color="secondary" onClick={() => deleteEmployee(val._id)}>
                     Delete
                   </Button>
-                  <Button size="small" variant="contained" color="secondary">
+                  <Button size="small" variant="contained" color="secondary" onClick={() => navigateToUpdate(val._id)}>
                     Update
                   </Button>
                 </CardActions>
