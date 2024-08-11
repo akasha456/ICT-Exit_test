@@ -1,4 +1,3 @@
-// model.js
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
@@ -6,8 +5,8 @@ const schema = new mongoose.Schema({
   designation: String,
   empId: String,
   img_url: String,
-});
+}, { collection: 'employee' }); // Specify collection name explicitly
 
-const Employee = mongoose.model('Employee', schema);
+const model = mongoose.model('employee', schema);
 
-module.exports = Employee;
+module.exports = model;

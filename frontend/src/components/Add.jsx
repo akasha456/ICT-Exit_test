@@ -1,88 +1,90 @@
 import { Box, Button, TextField } from "@mui/material";
-import { useState } from "react";
+import  { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 const Add = () => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     EmpName: "",
     designation: "",
-    empId: "",
+    empId:"",
     img_url: ""
   });
-
   const inputHandler = (e) => {
+    console.log(e.target.value);
     setInputs({ ...inputs, [e.target.name]: e.target.value });
+    console.log("in",inputs);
   };
-
-  const addData = () => {
-    axios.post("http://localhost:3001/add", inputs)
-      .then((response) => {
-        console.log(response.data);
-        navigate("/"); // Redirect to home page or any other page
-      })
-      .catch((error) => {
-        console.error("There was an error adding the data!", error);
-      });
+  const addData = async () => {
+    try {
+      const response = await axios.post("http://localhost:3001/add", inputs);
+      console.log(response.data);
+      navigate("/");
+    } catch (error) {
+      console.error("There was an error adding the employee data:", error);
+    }
   };
 
   return (
     <div>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "90vh",
-        }}
-      >
+      <div>
         <Box
-          component="form"
           sx={{
             display: "flex",
             flexDirection: "column",
-            gap: 2,
-            width: "600px",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "90vh",
           }}
         >
-          <TextField
-            variant="outlined"
-            placeholder="Employee Name"
-            onChange={inputHandler}
-            name="EmpName"
-            value={inputs.EmpName}
-            fullWidth
-          />
-          <TextField
-            variant="outlined"
-            placeholder="Designation"
-            onChange={inputHandler}
-            name="designation"
-            value={inputs.designation}
-            multiline
-            rows={4}
-          />
-          <TextField
-            variant="outlined"
-            placeholder="Employee Id"
-            onChange={inputHandler}
-            name="empId"
-            value={inputs.empId}
-          />
-          <TextField
-            variant="outlined"
-            placeholder="Photo (paste any link from the browser)"
-            onChange={inputHandler}
-            name="img_url"
-            value={inputs.img_url}
-          />
-          <Button variant="contained" color="secondary" onClick={addData}>
-            Submit
-          </Button>
+          <Box
+            component="form"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              width: "600px",
+            }}
+          >
+            <TextField
+              variant="outlined"
+              placeholder="Employee Name"
+              onChange={inputHandler}
+              name="EmpName"
+              value={inputs.title}
+              fullWidth
+            />
+            <TextField
+              variant="outlined"
+              placeholder="Designation"
+              onChange={inputHandler}
+              name="designation"
+              value={inputs.designation}
+              multiline={4}
+            />
+             <TextField
+              variant="outlined"
+              placeholder="Employee Id"
+              onChange={inputHandler}
+              name="empId"
+              value={inputs.empId}
+            />
+            <TextField
+              variant="outlined"
+              placeholder="Photo(paste any link from the browser)"
+              onChange={inputHandler}
+              name="img_url"
+              value={inputs.img_url}
+            />
+           
+
+            <Button variant="contained" color="secondary" onClick={addData}>
+              Submit
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      </div>
     </div>
   );
 };

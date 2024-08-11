@@ -1,37 +1,50 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
-const BlogModel = require("./model"); // Adjust the path as needed
-
 const app = express();
-const PORT = 3001;
-
+var PORT = 3001;
 app.use(express.json());
 app.use(cors());
+require("./connection");
+const model = require('./model');
 
-// Import the database connection
-require("./connection"); // This will automatically connect to the database
-
-// POST API to add data
 app.post("/add", async (req, res) => {
   try {
     console.log(req.body);
-    const result = await BlogModel(req.body).save();
+    const result = await model(req.body).save();
     res.send({ message: "Employee added" });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: "Error adding employee" });
   }
 });
 
-// GET API to retrieve data
 app.get("/get", async (req, res) => {
   try {
-    const data = await BlogModel.find(); // Fetch all records
-    res.json(data);
+    const employees = await model.find(); // Fetches all documents
+    res.json(employees);
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: "Error retrieving data" });
+    res.status(500).send({ message: "Error fetching employees" });
+  }
+});
+
+
+app.put("/update/:id", async (req, res) => {
+  try {
+    const result = await model.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.send({ message: "Employee updated", data: result });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Error updating employee" });
+  }
+});
+
+app.delete("/delete/:id", async (req, res) => {
+  try {
+    await model.findByIdAndDelete(req.params.id);
+    res.send({ message: "Employee deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Error deleting employee" });
   }
 });
 
